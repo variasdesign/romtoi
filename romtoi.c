@@ -15,6 +15,11 @@ int get_roman_index(char a)
 	return (i);
 }
 
+void ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
 int ft_strlen(char *str)
 {
 		int len;
@@ -108,53 +113,68 @@ int check_rules(char *str, int len)
 	return (1);
 }
 
-int validate_roman_chars(char *str)
+int validate_roman_chars(char *str, int len)
 {
-	int len;
-
-	len = ft_strlen(str);
 	if(!check_invalid_chars(str, len)
 		|| !check_rules(str, len))
 			return(0);
 	return (1);
 }
 
-int process_string(char *str)
+int process_string(char *str, int len)
 {
 	int num;
 	int i;
-	int repeated_count;
 
 	num = 0;
-	repeated_count = 1;
 	i = 0;
-	while (str[i])
+	while (i < len)
 	{
-		while (str[i] == str[i + repeated_count])
-			repeated_count++;
+		if (get_roman_index(str[i]) < get_roman_index(str[i + 1]))
+		{
+			num = num + (roman_values[get_roman_index(str[i + 1])] - roman_values[get_roman_index(str[i])]);
+			i += 2;
+			continue;
+		}
+		num = num + roman_values[get_roman_index(str[i])];
 		i++;
 	}
 	return (num);
 }
 
-void putnbr(int nbr)
+void ft_putnbr(int nbr)
 {
-
+	if (nbr == -2147483648)
+	{
+		write(1, "-2147483648", 11);
+	}
+	if (nbr < 0)
+	{
+		nbr = -nbr;
+		write(1, "-", 1);
+	}
+	if (nbr / 10 != 0)
+		ft_putnbr(nbr / 10);
+	ft_putchar(nbr % 10 + '0');
 }
 
 int main(int argc, char **argv)
 {
+	int len;
+
 	if (argc != 2)
 	{
 		write(1, "The number of arguments must be one.\n", 37);
 		return (1);
 	}
-	if (!validate_roman_chars(argv[1]))
+	len = ft_strlen(argv[1]);
+	if (!validate_roman_chars(argv[1], len))
 	{
-		write(1, "The argument must contain a valid roman numeral.", 48);
+		write(1, "The argument must contain a valid roman numeral.\n", 49);
 		return (1);
 	}
 
-	//putnbr(process_string(argv[1]));
+	ft_putnbr(process_string(argv[1], len));
+	ft_putchar('\n');
 	return (0);
 }
