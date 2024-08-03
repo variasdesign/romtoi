@@ -84,26 +84,29 @@ int check_rules(char *str, int len)
 
 	max_roman = 6;
 	i = 0;
-	while(i < len - 1)
+	while(i < len)
 	{
-		if (get_roman_index(str[i]) < max_roman)
+		if (get_roman_index(str[i]) <= max_roman)
 		{
-			if (max_roman != 0)
-				max_roman = get_roman_index(str[i]);
-			if (get_roman_index(str[i]) < get_roman_index(str[i + 1]))
+			if (i != len - 1)
 			{
-				if (!check_substraction(str[i], str[i + 1]))
-					return (0);
-				i += 2;
-				continue;
-			}
-			if (str[i] == str[i + 1])
-			{
-				repeated_count = check_addition(str, i);
-				if (!repeated_count)
-					return (0);
-				i = i + repeated_count;
-				continue;
+				if (max_roman != 0)
+					max_roman = get_roman_index(str[i]);
+				if (get_roman_index(str[i]) < get_roman_index(str[i + 1]))
+				{
+					if (!check_substraction(str[i], str[i + 1]))
+						return (0);
+					i += 2;
+					continue;
+				}
+				if (str[i] == str[i + 1])
+				{
+					repeated_count = check_addition(str, i);
+					if (!repeated_count)
+						return (0);
+					i = i + repeated_count;
+					continue;
+				}
 			}
 		}
 		else
@@ -170,7 +173,7 @@ int main(int argc, char **argv)
 	len = ft_strlen(argv[1]);
 	if (!validate_roman_chars(argv[1], len))
 	{
-		write(1, "The argument must contain a valid roman numeral.\n", 49);
+		write(1, "The argument must contain a valid roman numeral.\n", 50);
 		return (1);
 	}
 
