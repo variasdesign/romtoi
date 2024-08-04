@@ -82,20 +82,19 @@ int check_rules(char *str, int len)
 	int max_roman;
 	int repeated_count;
 
-	max_roman = 6;
+	max_roman = 7;
 	i = 0;
 	while(i < len)
 	{
-		if (get_roman_index(str[i]) <= max_roman)
+		if (get_roman_index(str[i]) < max_roman)
 		{
 			if (i != len - 1)
 			{
-				if (max_roman != 0)
-					max_roman = get_roman_index(str[i]);
 				if (get_roman_index(str[i]) < get_roman_index(str[i + 1]))
 				{
 					if (!check_substraction(str[i], str[i + 1]))
 						return (0);
+					max_roman = get_roman_index(str[i]);
 					i += 2;
 					continue;
 				}
@@ -104,6 +103,7 @@ int check_rules(char *str, int len)
 					repeated_count = check_addition(str, i);
 					if (!repeated_count)
 						return (0);
+					max_roman = get_roman_index(str[i]);
 					i = i + repeated_count;
 					continue;
 				}
