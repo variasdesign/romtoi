@@ -1,0 +1,1 @@
+This repository contains a C program that accepts a single argument containing a valid roman numeral and outputs its numerical value. The program performs validation of roman numerals up to (but not including) 4000.
